@@ -1,0 +1,40 @@
+<div class="modal-header">
+	<h3 class="modal-title" ng-if="vm.isNew">New Article Category</h3>
+	<h3 class="modal-title" ng-if="!vm.isNew">Update Article Category</h3>
+</div>
+<div class="modal-body" ng-form="vm.categoryForm">
+	<div class="form-group" ng-class="{'has-error': vm.categoryForm.articleCategoryCodeName.$touched && vm.categoryForm.articleCategoryCodeName.$invalid}">
+		<label for="articleCategoryCodeId">Article Category Code:</label>
+		<input name="articleCategoryCodeName" id="articleCategoryCodeId" type="text" ng-model="vm.category.articleCategoryCode" class="form-control" ng-disabled="!vm.isNew" ng-change="vm.codeChanged()" required/>
+		<div ng-messages="vm.categoryForm.articleCategoryCodeName.$error" class="help-block" ng-show="vm.categoryForm.articleCategoryCodeName.$touched && vm.isNew">
+			<p ng-message="required">You did not enter a text</p>
+			<p ng-message="uniqueError">Must be unique</p>
+      	</div>
+	</div>
+	<div class="form-group" ng-class="{'has-error': vm.categoryForm.nameName.$touched && vm.categoryForm.nameName.$invalid}">
+		<label for="nameId">Article Category Name:</label>
+		<input name="nameName" id="nameId" type="text" ng-model="vm.category.name" class="form-control" required/>
+		<div ng-messages="vm.categoryForm.nameName.$error" class="help-block" ng-show="vm.categoryForm.nameName.$touched">
+			<p ng-message="required">You did not enter a text</p>
+      	</div>
+	</div>
+	<div class="form-group" ng-class="{'has-error': vm.categoryForm.allowedDiscountPercentageName.$touched && vm.categoryForm.allowedDiscountPercentageName.$invalid}">
+		<label for="allowedDiscountPercentageId">Allowed Discount Percentage:</label>
+		<input name="allowedDiscountPercentageName" id="allowedDiscountPercentageId" type="number" ng-model="vm.category.allowedDiscountPercentage" class="form-control" ng-pattern="/^[^e]+$/" min="0" max="100" required/>
+		<div ng-messages="vm.categoryForm.allowedDiscountPercentageName.$error" class="help-block" ng-show="vm.categoryForm.allowedDiscountPercentageName.$touched">
+			<p ng-message="required">You did not enter a number</p>
+        	<p ng-message="number">You did not enter a valid number</p>
+        	<p ng-message="min">Your number is lesser than zero</p>
+        	<p ng-message="max">Your number is greater than one hundred</p>
+        	<p ng-message="pattern">You did not enter a valid number</p>
+      	</div>
+	</div>
+	<div class="checkbox">
+		<label><input id="consumerGoodsId" type="checkbox" ng-model="vm.categoryChecked"/><b>Consumer Goods</b></label>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" ng-click="vm.newCategory(vm.categoryForm.$valid)" ng-disabled="vm.categoryForm.$invalid" ng-if="vm.isNew"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>
+	<button class="btn btn-primary" ng-click="vm.updateCategory(vm.categoryForm.$valid)" ng-disabled="vm.categoryForm.$invalid" ng-if="!vm.isNew"><i class="fa fa-pencil" aria-hidden="true"></i> Update</button>
+	<button class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
+</div>

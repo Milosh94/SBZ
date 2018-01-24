@@ -3,6 +3,7 @@ package com.project.sbz.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +31,7 @@ public class CustomerCategory implements Serializable{
 	private String name;
 	
 	@JsonBackReference
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "customerCategory")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "customerCategory", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<ConsumptionThreshold> consumptionThresholds;
 	
 	@JsonBackReference

@@ -1,0 +1,43 @@
+<div class="modal-header">
+	<h3 class="modal-title" ng-if="vm.isNew">New Category Threshold</h3>
+	<h3 class="modal-title" ng-if="!vm.isNew">Update Category Threshold</h3>
+</div>
+<div class="modal-body" ng-form="vm.thresholdForm">
+	<div class="form-group" ng-class="{'has-error': vm.thresholdForm.priceFromName.$touched && vm.thresholdForm.priceFromName.$invalid}">
+		<label for="priceFromId">Price From:</label>
+		<input name="priceFromName" id="priceFromId" type="number" ng-model="vm.threshold.priceFrom" class="form-control" ng-blur="vm.checkPrice()" ng-pattern="/^[^e]+$/" min="0" required/>
+		<div ng-messages="vm.thresholdForm.priceFromName.$error" class="help-block" ng-show="vm.thresholdForm.priceFromName.$touched">
+			<p ng-message="required">You did not enter a number</p>
+        	<p ng-message="number">You did not enter a valid number</p>
+        	<p ng-message="min">Your number is lesser than zero</p>
+        	<p ng-message="pattern">You did not enter a valid number</p>
+      	</div>
+	</div>
+	<div class="form-group" ng-class="{'has-error': vm.thresholdForm.priceToName.$touched && vm.thresholdForm.priceToName.$invalid}">
+		<label for="priceToId">Price To:</label>
+		<input name="priceToName" id="priceToId" type="number" ng-model="vm.threshold.priceTo" class="form-control" ng-blur="vm.checkPrice()" ng-pattern="/^[^e]+$/" min="0" required/>
+		<div ng-messages="vm.thresholdForm.priceToName.$error" class="help-block" ng-show="vm.thresholdForm.priceToName.$touched">
+			<p ng-message="required">You did not enter a number</p>
+        	<p ng-message="number">You did not enter a valid number</p>
+        	<p ng-message="min">Your number is lesser than zero</p>
+        	<p ng-message="priceError">Price to must be greater than price from</p>
+        	<p ng-message="pattern">You did not enter a valid number</p>
+      	</div>
+	</div>
+	<div class="form-group" ng-class="{'has-error': vm.thresholdForm.rewardPointsPercentageName.$touched && vm.thresholdForm.rewardPointsPercentageName.$invalid}">
+		<label for="rewardPointsPercentageId">Reward Points Percentage:</label>
+		<input name="rewardPointsPercentageName" id="rewardPointsPercentageId" type="number" ng-model="vm.threshold.rewardPointsPercentage" class="form-control" ng-pattern="/^[^e]+$/" min="0" max= "100" required/>
+		<div ng-messages="vm.thresholdForm.rewardPointsPercentageName.$error" class="help-block" ng-show="vm.thresholdForm.rewardPointsPercentageName.$touched">
+			<p ng-message="required">You did not enter a number</p>
+        	<p ng-message="number">You did not enter a valid number</p>
+        	<p ng-message="min">Your number is lesser than zero</p>
+        	<p ng-message="max">Your number is greater than one hundred</p>
+        	<p ng-message="pattern">You did not enter a valid number</p>
+      	</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" ng-click="vm.addThreshold(vm.thresholdForm.$valid)" ng-disabled="vm.thresholdForm.$invalid" ng-if="vm.isNew"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>
+	<button class="btn btn-primary" ng-click="vm.addThreshold(vm.thresholdForm.$valid)" ng-disabled="vm.thresholdForm.$invalid" ng-if="!vm.isNew"><i class="fa fa-pencil" aria-hidden="true"></i> Update</button>
+	<button class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
+</div>

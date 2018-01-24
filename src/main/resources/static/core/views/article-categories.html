@@ -1,0 +1,42 @@
+<div class="container-fluid">
+	<h2>Article Categories</h2>
+	<div class="container-fluid" ng-if="vm.customerCategories.length === 0">
+		<h4>There isn't any article category defined</h4>
+	</div>
+	<div ng-repeat="cat in vm.categories" class="container-fluid customer-category-div" ng-class="{'background-white': $index%2 === 1, 'background-gray': $index%2 === 0}">
+		<div class="row">
+			<div class="col-xs-4">
+				<h4>Category Name: {{cat.name}}</h4>
+			</div>
+			<div class="col-xs-4">
+				<h4>Code: {{cat.articleCategoryCode}}</h4>
+			</div>
+			<div class="col-xs-4">
+				<h4>Discount Percentage: {{cat.allowedDiscountPercentage}}%</h4>
+			</div>
+		</div>
+		<div class="row" ng-if="cat.parentCategory !== null">
+			<div class="col-xs-12">
+				<h4>Parent Category: {{cat.parentCategory.name}}</h4>
+			</div>
+		</div>
+		<div>
+			<h4>Category Articles</h4>
+			<div class="container-fluid" ng-if="cat.categoryArticles.length === 0">
+				<h5>There isn't any article defined for this customer category</h5>
+			</div>
+			<div class="row profile-div-spacing" ng-repeat="article in cat.categoryArticles">
+				<div class="col-xs-12">
+					<b>Article Name: </b><span>{{article.name}}</span>
+				</div>
+			</div>
+		</div>
+		<div>
+			<button class="btn btn-primary update-category-button" ng-click="vm.updateCategory(cat, $index)"><i class="fa fa-pencil" aria-hidden="true"></i> Update Category</button>
+			<button class="btn btn-danger update-category-button" ng-click="vm.deleteCategory(cat, $index)"><i class="fa fa-times" aria-hidden="true"></i> Delete Category</button>
+		</div>
+	</div>
+	<div class="container-fluid customer-category-div">
+		<button class="btn btn-primary update-category-button" ng-click="vm.newCategory()"><i class="fa fa-plus" aria-hidden="true"></i> New Category</button>
+	</div>
+</div>

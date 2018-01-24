@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>WebShop</title>
+		<meta name="author" content="Milos Obradovic"/>
+		<link rel="icon" href="images/icon.png"/>
+		<!-- CSS files -->
+		<link type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+		<link type="text/css" href="bower_components/angular-ui-select/dist/select.css" rel="stylesheet"/>
+		<link type="text/css" href="bower_components/components-font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+		<link type="text/css" href="bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet"/>
+		<link type="text/css" href="bower_components/angular-toastr/dist/angular-toastr.min.css" rel="stylesheet"/>
+		<link type="text/css" href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet"/>
+		<link  type="text/css" href="css/index.css" rel="stylesheet"/>
+		
+		<!--<base href="/">-->
+	</head>
+	<body ng-app="WebShopApp">
+		<div ui-view="mainView"></div>
+		
+		<!-- JS files -->
+		<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+		<!--<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
+		<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+		
+		<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+		<script type="text/javascript" src="bower_components/lodash/dist/lodash.js"></script>
+		<script type="text/javascript" src="bower_components/restangular/dist/restangular.js"></script>
+		<script type="text/javascript" src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+		<script type="text/javascript" src="bower_components/angular-messages/angular-messages.js"></script>
+		<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+		<script type="text/javascript" src="bower_components/angular-ui-select/dist/select.js"></script>
+		<script type="text/javascript" src="bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+		<script type="text/javascript" src="bower_components/ng-scrollbars/dist/scrollbars.min.js"></script>
+		<script type="text/javascript" src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+		
+		<script type="text/javascript" src="core/scripts/app.js"></script>
+		<script type="text/javascript" src="core/services/auth-service.js"></script>
+		<script type="text/javascript" src="core/scripts/home/home-controller.js"></script>
+		<script type="text/javascript" src="core/scripts/user/user-resource.js"></script>
+		<script type="text/javascript" src="core/scripts/article/article-resource.js"></script>
+		<script type="text/javascript" src="core/scripts/category/category-resource.js"></script>
+		<script type="text/javascript" src="core/scripts/customer/customer-controller.js"></script>
+		<script type="text/javascript" src="core/scripts/customer/customer-resource.js"></script>
+		<script type="text/javascript" src="core/scripts/customer-category/customer-category-resource.js"></script>
+		<script type="text/javascript" src="core/scripts/manager/manager-controller.js"></script>
+		<script type="text/javascript" src="core/scripts/article-category/article-category-resource.js"></script>
+		<script type="text/javascript" src="core/scripts/discount-event/discount-event-resource.js"></script>
+		<script type="text/javascript" src="core/directives/datepicker.js"></script>
+		<script type="text/javascript" src="core/directives/article-category-validity.js"></script>
+	</body>
+</html>

@@ -11,9 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.project.sbz.serializer.JsonDateSerializer;
@@ -27,6 +29,7 @@ public class User implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@Column(unique = true)
 	private String username;
 	
 	private String password;
@@ -47,12 +50,16 @@ public class User implements Serializable{
 	@Column(name = "register_date")
 	private Date registerDate;
 	
+	@JsonBackReference
+	@OneToOne(mappedBy = "user", fetch=FetchType.LAZY)
+	private CustomerProfile customerProfile;
+	
 	public User() {
 		
 	}
 
 	public User(int id, String username, String password, String firstName, String lastName, Role role,
-			Date registerDate) {
+			Date registerDate, CustomerProfile customerProfile) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -61,7 +68,10 @@ public class User implements Serializable{
 		this.lastName = lastName;
 		this.role = role;
 		this.registerDate = registerDate;
+		this.customerProfile = customerProfile;
 	}
+
+
 
 	public int getId() {
 		return id;
@@ -117,6 +127,14 @@ public class User implements Serializable{
 
 	public void setRegisterDate(Date registerDate) {
 		this.registerDate = registerDate;
+	}
+
+	public CustomerProfile getCustomerProfile() {
+		return customerProfile;
+	}
+
+	public void setCustomerProfile(CustomerProfile customerProfile) {
+		this.customerProfile = customerProfile;
 	}
 	
 	

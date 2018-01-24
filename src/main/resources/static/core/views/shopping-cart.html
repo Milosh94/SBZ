@@ -1,0 +1,55 @@
+<div class="container-fluid">
+	<h2>Shopping Cart</h2>
+	<div class="container-fluid" ng-cloak>
+		<h4 ng-if="vm.currentShoppingCart.length === 0">You didn't added anything to cart yet</h4>
+		<div ng-if="vm.currentShoppingCart.length > 0">
+			<div class="table-responsive">
+				<table class="table table-hover table-striped">
+					<thead>
+						<tr>
+							<th rowspan="2" class="article-header-align">Product ID</th>
+							<th rowspan="2" class="article-header-align">Product Name</th>
+							<th rowspan="2" class="article-header-align">Product Category</th>
+							<th rowspan="2" class="article-header-align">Price</th>
+							<th colspan="4">Discount</th>
+							<th rowspan="2" class="article-header-align">Quantity</th>
+							<th rowspan="2" class="article-header-align">Added to cart</th>
+							<th class="article-header-align">Shop</th>
+						</tr>
+						<tr>
+							<th>Name</th>
+							<th>Date From</th>
+							<th>Date To</th>
+							<th>Percentage</th>
+							<th>(Select quantity)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="art in vm.currentShoppingCart">
+							<td>{{art.articleCode}}</td>
+							<td>{{art.name}}</td>
+							<td>{{art.articleCategoryName}}</td>
+							<td>{{art.price}}</td>
+							<td colspan="4" ng-if="art.discount === null">Currently no discount</td>
+							<td ng-if="art.discount !== null">{{art.discount.name}}</td>
+							<td ng-if="art.discount !== null">{{art.discount.dateFrom}}</td>
+							<td ng-if="art.discount !== null">{{art.discount.dateTo}}</td>
+							<td ng-if="art.discount !== null">{{art.discount.discountPercentage}}%</td>
+							<td>{{art.articleCount}}</td>
+							<td>{{art.cartQuantity}}</td>
+							<td>
+								<input type="number" class="add-to-cart-input" ng-model="art.updatedCartQuantity"/>
+								<button class="btn btn-primary" ng-click="vm.updateCart(art)"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Change quantity</button>
+								<button class="btn btn-danger" ng-click="vm.removeFromCart(art)"><i class="fa fa-times" aria-hidden="true"></i> Remove</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="container-fluid">
+				<button class="btn btn-success" ng-click="vm.checkout()"><i class="fa fa-check" aria-hidden="true"></i> Checkout</button>
+				<button class="btn btn-danger" ng-click="vm.emptyCart()"><i class="fa fa-times" aria-hidden="true"></i> Empty cart</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,36 @@
+<div class="container-fluid">
+	<h2>Customer Categories</h2>
+	<div class="container-fluid" ng-if="vm.customerCategories.length === 0">
+		<h4>There isn't any customer category defined</h4>
+	</div>
+	<div ng-repeat="cat in vm.customerCategories" class="container-fluid customer-category-div" ng-class="{'background-white': $index%2 === 1, 'background-gray': $index%2 === 0}">
+		<div class="row">
+			<div class="col-xs-6">
+				<h4>Category Name: {{cat.name}}</h4>
+			</div>
+			<div class="col-xs-6">
+				<h4>Code: {{cat.categoryCode}}</h4>
+			</div>
+		</div>
+		<div>
+			<h4>Consumption Thresholds</h4>
+			<div class="container-fluid" ng-if="cat.consumptionThresholds.length === 0">
+				<h5>There isn't any consumption threshold defined for this customer category</h5>
+			</div>
+			<div class="row profile-div-spacing" ng-repeat="threshold in cat.consumptionThresholds">
+				<div class="col-xs-4">
+					<b>Price From: </b><span>{{threshold.priceFrom}}</span>
+				</div>
+				<div class="col-xs-4">
+					<b>Price To: </b><span>{{threshold.priceTo}}</span>
+				</div>
+				<div class="col-xs-4">
+					<b>Reward Points Percentage: </b><span>{{threshold.rewardPointsPercentage}}</span>
+				</div>
+			</div>
+		</div>
+		<div>
+			<button class="btn btn-primary update-category-button" ng-click="vm.updateCategory(cat, $index)"><i class="fa fa-pencil" aria-hidden="true"></i> Update Category</button>
+		</div>
+	</div>
+</div>

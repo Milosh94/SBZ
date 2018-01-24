@@ -33,7 +33,7 @@ public class Article implements Serializable{
 	private String name;
 	
 	@JsonManagedReference
-	@JoinColumn(name = "article_category_id", nullable = false)
+	@JoinColumn(name = "article_category_id", nullable = true)
 	@ManyToOne(fetch = FetchType.EAGER)
 	private ArticleCategory articleCategory;
 	

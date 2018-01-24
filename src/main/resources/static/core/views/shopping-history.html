@@ -1,0 +1,76 @@
+<div class="container-fluid">
+<h2>Shopping History Informations</h2>
+	<div class="container-fluid" ng-cloak>
+		<h4 ng-if="vm.shoppingHistory.length === 0">You didn't buy anything yet</h4>
+		<div class="container-fluid bottom-margin-tree-percentage" ng-repeat="bill in vm.shoppingHistory" ng-class="{'background-white': $index%2 === 1, 'background-gray': $index%2 === 0}">
+			<h3>Bill code: {{bill.billCode}}</h3>
+			<div class="container-fluid" ng-repeat="item in bill.billItemsDTO | orderBy: 'itemNumber'">
+				<h4>Item No. {{item.itemNumber}}</h4>
+				<div class="container-fluid">
+					<h4>Article:</h4>
+					<div class="container-fluid">
+						<div class="row profile-div-spacing">
+							<div class="col-xs-4"><b class="profile-spacing">Article Name:</b><span>{{item.articleDTO.name}}</span></div>
+							<div class="col-xs-4"><b class="profile-spacing">Article Code:</b><span>{{item.articleDTO.articleCode}}</span></div>
+							<div class="col-xs-4"><b class="profile-spacing">Category Name:</b><span>{{item.articleDTO.articleCategoryName}}</span></div>
+						</div>
+						<div class="row profile-div-spacing">
+							<div class="col-xs-4"><b class="profile-spacing">Quantity Bought:</b><span>{{item.count}}</span></div>
+							<div class="col-xs-8"><b class="profile-spacing">Bought Article Price:</b><span>{{item.price}}</span></div>
+						</div>
+					</div>
+					<h4>Item Discounts:</h4>
+					<div class="container-fluid profile-div-spacing">
+						<div ng-if="item.itemDiscountsDTO.length === 0">Bought without any discount</div>
+						<div class="row" ng-repeat="itemDiscount in item.itemDiscountsDTO">
+							<div class="col-xs-4"><b class="profile-spacing">Item Discount Code:</b><span>{{itemDiscount.billItemDiscountCode}}</span></div>
+							<div class="col-xs-4"><b class="profile-spacing">Discount Percentage:</b><span>{{itemDiscount.discountPercentage}}%</span></div>
+							<div class="col-xs-4">
+								<b class="profile-spacing">Discount Type:</b>
+								<span ng-if="!itemDiscount.discountType">Basic</span>
+								<span ng-if="itemDiscount.discountType">Additional</span>
+							</div>
+						</div>
+					</div>
+					<h4>Item price:</h4>
+					<div class="row container-fluid profile-div-spacing">
+						<div class="col-xs-4"><b class="profile-spacing">Total Original Price:</b><span>{{item.totalOriginalPrice}}</span></div>
+						<div class="col-xs-8"><b class="profile-spacing">Total Discount Price:</b><span>{{item.totalDiscountPrice}}</span></div>
+					</div>
+				</div>
+			</div>
+			<h4>Bill Discounts:</h4>
+			<div ng-if="bill.billDiscountsDTO.length === 0">No discounts</div>
+			<div ng-repeat="billDiscount in bill.billDiscountsDTO">
+				<div class="col-xs-4"><b class="profile-spacing">Bill Discount Code:</b><span>{{billDiscount.billDiscountCode}}</span></div>
+				<div class="col-xs-4"><b class="profile-spacing">Discount Percentage:</b><span>{{billDiscount.discountPercentage}}%</span></div>
+				<div class="col-xs-4">
+					<b class="profile-spacing">Discount Type:</b>
+					<span ng-if="!billDiscount.discountType">Basic</span>
+					<span ng-if="billDiscount.discountType">Additional</span>
+				</div>
+			</div>
+			<h4 class="total-bill">Total Bill:</h4>
+			<div class="container-fluid bottom-margin-tree-percentage">
+				<div class="row profile-div-spacing">
+					<div class="col-xs-4"><b class="profile-spacing">Original Cost:</b><span>{{bill.originalCost}}</span></div>
+					<div class="col-xs-4"><b class="profile-spacing">Discount:</b><span>{{bill.discountPercentage}}%</span></div>
+					<div class="col-xs-4"><b class="profile-spacing">Final Cost:</b><span>{{bill.finalCost}}</span></div>
+				</div>
+				<div class="row profile-div-spacing">
+					<div class="col-xs-4"><b class="profile-spacing">Reward Points Spent:</b><span>{{bill.rewardPointsSpent}}</span></div>
+					<div class="col-xs-8"><b class="profile-spacing">Reward Points Gaines:</b><span>{{bill.rewardPointsGained}}</span></div>
+				</div>
+				<div class="row profile-div-spacing">
+					<div class="col-xs-4"><b class="profile-spacing">Date Created:</b><span>{{bill.created}}</span></div>
+					<div class="col-xs-8">
+						<b class="profile-spacing">Bill Status:</b>
+						<span ng-if="bill.status === -1">Denied</span>
+						<span ng-if="bill.status === 0">Ordered</span>
+						<span ng-if="bill.status === 1">Successfully Bought</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

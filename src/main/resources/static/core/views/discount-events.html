@@ -1,0 +1,50 @@
+<div class="container-fluid">
+	<h2>Discount Events</h2>
+	<div class="container-fluid" ng-if="vm.discountEvents.length === 0">
+		<h4>There isn't any discount event defined</h4>
+	</div>
+	<div ng-repeat="discount in vm.discountEvents" class="container-fluid customer-category-div" ng-class="{'background-white': $index%2 === 1, 'background-gray': $index%2 === 0}">
+		<div class="row">
+			<div class="col-xs-4">
+				<h4>Event Name: {{discount.name}}</h4>
+			</div>
+			<div class="col-xs-4">
+				<h4>Code: {{discount.eventCode}}</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<h4>Discount Percentage: {{discount.discountPercentage}}%</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-4">
+				<h4>Date From: {{discount.dateFrom}}</h4>
+			</div>
+			<div class="col-xs-4">
+				<h4>Date To: {{discount.dateTo}}</h4>
+			</div>
+		</div>
+		<div>
+			<h4>Article Categories</h4>
+			<div class="container-fluid" ng-if="discount.articleCategories.length === 0">
+				<h5>There isn't any article category defined for this discount event</h5>
+			</div>
+			<div class="row profile-div-spacing" ng-repeat="category in discount.articleCategories">
+				<div class="col-xs-6">
+					<b>Article Category Name: </b><span>{{category.name}}</span>
+				</div>
+				<div class="col-xs-6">
+					<b>Article Category Code: </b><span>{{category.articleCategoryCode}}</span>
+				</div>
+			</div>
+		</div>
+		<div>
+			<button class="btn btn-primary update-category-button" ng-click="vm.updateDiscountEvent(discount, $index)"><i class="fa fa-pencil" aria-hidden="true"></i> Update Discount</button>
+			<button class="btn btn-danger update-category-button" ng-click="vm.deleteDiscountEvent(discount, $index)"><i class="fa fa-times" aria-hidden="true"></i> Delete Discount</button>
+		</div>
+	</div>
+	<div class="container-fluid customer-category-div">
+		<button class="btn btn-primary update-category-button" ng-click="vm.newDiscountEvent()"><i class="fa fa-plus" aria-hidden="true"></i> New Discount</button>
+	</div>
+</div>

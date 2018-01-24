@@ -1,0 +1,116 @@
+<div ng-if="vm.loggedUserRole.valueOf() === 'ROLE_CUSTOMER'.valueOf()">
+	<div class="container-fluid btn-toolbar pull-right top-margin-five-percentage bottom-margin-tree-percentage">
+		<a ui-sref="shopping-history">
+			<button class="btn btn-primary"><i class="fa fa-history" aria-hidden="true"></i> Shopping history</button>
+		</a>
+		<a ui-sref="shopping-cart">
+			<button class="btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping cart</button>
+		</a>
+	</div>
+	<div class="clearfix"></div>
+	<hr align="right" width="30%" class="horizontal-line"/>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-sm-3 background-gray">
+				<form>
+					<h4>Search products</h4>
+					<div class="form-group">
+						<label for="product-id">Product ID</label>
+						<input type="text" id="product-id" class="form-control" ng-model="vm.searchParams.articleId"/>
+					</div>
+					<div class="form-group">
+						<label for="product-name">Product name</label>
+						<input type="text" id="product-name" class="form-control" ng-model="vm.searchParams.articleName"/>
+					</div>
+					<div class="form-group">
+						<label for="price-from">Price from</label>
+						<input type="number" id="price-from" placeholder="Min" class="form-control" ng-model="vm.searchParams.priceFrom"/>
+					</div>
+					<div class="form-group">
+						<label for="price-to">Price to</label>
+						<input type="number" id="price-to" placeholder="Max" class="form-control" ng-model="vm.searchParams.priceTo"/>
+					</div>
+					<p class="bold-text">Product categories</p>
+					<div id="product-categories" ng-scrollbars ng-scrollbars-config="vm.config">
+						<div class="checkbox category-width" ng-repeat="cat in vm.articleCategories">
+	  						<label><input type="checkbox" ng-model="cat.isChecked" ng-change="vm.updateCategories(cat)">{{cat.name}}</label>
+						</div>
+					</div>
+					<div class="btn-toolbar pull-right top-margin-thirty-percentage bottom-margin-ten-percentage">
+						<button type="submit" class="btn btn-primary" ng-click="vm.searchArticles(vm.categories, false)">Search</button>
+						<button type="button" class="btn btn-danger" ng-click="vm.clearSearch()">Clear</button>
+					</div>
+				</form>
+			</div>
+			<div class="hidden-xs col-sm-1"></div>
+			<div class="col-xs-12 col-sm-8">
+				<div class="table-responsive">
+					<table class="table table-hover table-striped">
+						<thead>
+							<tr>
+								<th rowspan="2" class="article-header-align">Product ID 
+									<i ng-click="vm.searchArticles(vm.categories, true, 0)" class="fa fa-sort change-cursor" aria-hidden="true"></i>
+								</th>
+								<th rowspan="2" class="article-header-align">Product Name 
+									<i ng-click="vm.searchArticles(vm.categories, true, 1)" class="fa fa-sort change-cursor" aria-hidden="true"></i>
+								</th>
+								<th rowspan="2" class="article-header-align">Product Category 
+									<i ng-click="vm.searchArticles(vm.categories, true, 2)" class="fa fa-sort change-cursor" aria-hidden="true"></i>
+								</th>
+								<th rowspan="2" class="article-header-align">Price 
+									<i ng-click="vm.searchArticles(vm.categories, true, 3)" class="fa fa-sort change-cursor" aria-hidden="true"></i>
+								</th>
+								<th colspan="4">Discount</th>
+								<th rowspan="2" class="article-header-align">Quantity</th>
+								<th class="article-header-align">Shop</th>
+							</tr>
+							<tr>
+								<th>Name</th>
+								<th>Date From</th>
+								<th>Date To</th>
+								<th>Percentage</th>
+								<th>(Select quantity)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="art in vm.searchedArticles">
+								<td>{{art.articleCode}}</td>
+								<td>{{art.name}}</td>
+								<td>{{art.articleCategoryName}}</td>
+								<td>{{art.price}}</td>
+								<td colspan="4" ng-if="art.discount === null">Currently no discount</td>
+								<td ng-if="art.discount !== null">{{art.discount.name}}</td>
+								<td ng-if="art.discount !== null">{{art.discount.dateFrom}}</td>
+								<td ng-if="art.discount !== null">{{art.discount.dateTo}}</td>
+								<td ng-if="art.discount !== null">{{art.discount.discountPercentage}}%</td>
+								<td>{{art.articleCount}}</td>
+								<td><input type="number" class="add-to-cart-input" ng-model="art.cartQuantity"/><button class="btn btn-primary" ng-click="vm.addToCart(art)"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="pull-right">
+					<ul class="pagination">
+						<li ng-repeat="page in vm.pageList" ng-class="{active: vm.currentPage === page}"><a ng-click="vm.getArticlePage(page)">{{page + 1}}</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div ng-if="vm.loggedUserRole.valueOf() === 'ROLE_MANAGER'.valueOf()">
+	<div class="container-fluid btn-toolbar pull-right top-margin-five-percentage bottom-margin-tree-percentage">
+		<a ui-sref="customer-categories">
+			<button class="btn btn-primary margin-right-5px">Customer Categories</button>
+		</a>
+		<a ui-sref="article-categories">
+			<button class="btn btn-info margin-right-5px">Article Categories</button>
+		</a>
+		<a ui-sref="discount-events">
+			<button class="btn">Discount Events</button>
+		</a>
+	</div>
+	<div class="clearfix"></div>
+	<hr align="right" width="30%" class="horizontal-line"/>
+	<div ui-view="managerView"></div>
+</div>

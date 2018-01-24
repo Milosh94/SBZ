@@ -1,0 +1,41 @@
+<div class="modal-header">
+	<h3 class="modal-title">Update Customer Category</h3>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-xs-6">
+			<h4>Category Name: {{vm.category.name}}</h4>
+		</div>
+		<div class="col-xs-6">
+			<h4>Code: {{vm.category.categoryCode}}</h4>
+		</div>
+	</div>
+	<div>
+		<h4>Consumption Thresholds</h4>
+		<div class="container-fluid" ng-if="vm.category.consumptionThresholds.length === 0">
+			<h5>There isn't any consumption threshold defined for this customer category</h5>
+		</div>
+		<div class="row profile-div-spacing" ng-repeat="threshold in vm.category.consumptionThresholds">
+			<div class="col-xs-3">
+				<b>Price From: </b><input ng-model="threshold.priceFrom" disabled/>
+			</div>
+			<div class="col-xs-3">
+				<b>Price To: </b><input ng-model="threshold.priceTo" disabled/>
+			</div>
+			<div class="col-xs-3">
+				<b>Reward Points Percentage: </b><input ng-model="threshold.rewardPointsPercentage" disabled/>
+			</div>
+			<div class="col-xs-3 update-category-margin-top-12px">
+				<button class="btn btn-primary" ng-click="vm.updateThreshold(threshold, $index)"><i class="fa fa-pencil" aria-hidden="true"></i> Update</button>
+				<button class="btn btn-danger" ng-click="vm.deleteThreshold($index)"><i class="fa fa-times" aria-hidden="true"></i> Delete</button>
+			</div>
+		</div>
+		<div class="top-margin-five-percentage">
+			<button class="btn btn-primary" ng-click="vm.newThreshold()"><i class="fa fa-plus" aria-hidden="true"></i> New</button>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" ng-click="vm.updateAll()"><i class="fa fa-pencil" aria-hidden="true"></i> Update</button>
+	<button class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
+</div>

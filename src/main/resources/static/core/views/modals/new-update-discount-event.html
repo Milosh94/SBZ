@@ -1,0 +1,64 @@
+<div class="modal-header">
+	<h3 class="modal-title" ng-if="vm.isNew">New Discount Event</h3>
+	<h3 class="modal-title" ng-if="!vm.isNew">Update Discount Event</h3>
+</div>
+<div class="modal-body" ng-form="vm.discountEventForm">
+	<div class="form-group" ng-class="{'has-error': vm.discountEventForm.discountEventCodeName.$touched && vm.discountEventForm.discountEventCodeName.$invalid}">
+		<label for="discountEventCodeId">Discount Event Code:</label>
+		<input name="discountEventCodeName" id="discountEventCodeId" type="text" ng-model="vm.discountEvent.eventCode" class="form-control" ng-disabled="!vm.isNew" ng-change="vm.codeChanged()" required/>
+		<div ng-messages="vm.discountEventForm.discountEventCodeName.$error" class="help-block" ng-show="vm.discountEventForm.discountEventCodeName.$touched && vm.isNew">
+			<p ng-message="required">You did not enter a text</p>
+			<p ng-message="uniqueError">Must be unique</p>
+      	</div>
+	</div>
+	<div class="form-group" ng-class="{'has-error': vm.discountEventForm.nameName.$touched && vm.discountEventForm.nameName.$invalid}">
+		<label for="nameId">Discount Event Name:</label>
+		<input name="nameName" id="nameId" type="text" ng-model="vm.discountEvent.name" class="form-control" required/>
+		<div ng-messages="vm.discountEventForm.nameName.$error" class="help-block" ng-show="vm.discountEventForm.nameName.$touched">
+			<p ng-message="required">You did not enter a text</p>
+      	</div>
+	</div>
+	<div class="input-daterange" id="datepicker" datepicker="{isNew: {{vm.isNew}}}">
+		<div class="form-group" ng-class="{'has-error': vm.discountEventForm.dateFromName.$touched && vm.discountEventForm.dateFromName.$invalid}">
+			<label for="dateFromId">Date From:</label>
+			<input id="dateFromId" name="dateFromName" type="text" ng-model="vm.discountEvent.dateFrom" class="form-control" placeholder="dd-mm-yyyy" required/>
+			<div ng-messages="vm.discountEventForm.dateFromName.$error" class="help-block" ng-show="vm.discountEventForm.dateFromName.$touched">
+				<p ng-message="required">You did not select date</p>
+      		</div>
+		</div>
+		<div class="form-group" ng-class="{'has-error': vm.discountEventForm.dateToName.$touched && vm.discountEventForm.dateToName.$invalid}">
+			<label for="dateToId">Date To:</label>
+			<input id="dateToId" name="dateToName" type="text" ng-model="vm.discountEvent.dateTo" class="form-control" placeholder="dd-mm-yyyy" required/>
+			<div ng-messages="vm.discountEventForm.dateToName.$error" class="help-block" ng-show="vm.discountEventForm.dateToName.$touched">
+				<p ng-message="required">You did not select date</p>
+		     </div>
+		</div>
+	</div>
+	<div class="form-group" ng-class="{'has-error': vm.discountEventForm.discountPercentageName.$touched && vm.discountEventForm.discountPercentageName.$invalid}">
+		<label for="discountPercentageId">Discount Percentage:</label>
+		<input name="discountPercentageName" id="discountPercentageId" type="number" ng-model="vm.discountEvent.discountPercentage" class="form-control" ng-pattern="/^[^e]+$/" min="0" max="100" required/>
+		<div ng-messages="vm.discountEventForm.discountPercentageName.$error" class="help-block" ng-show="vm.discountEventForm.discountPercentageName.$touched">
+			<p ng-message="required">You did not enter a number</p>
+        	<p ng-message="number">You did not enter a valid number</p>
+        	<p ng-message="min">Your number is lesser than zero</p>
+        	<p ng-message="max">Your number is greater than one hundred</p>
+        	<p ng-message="pattern">You did not enter a valid number</p>
+      	</div>
+	</div>
+	<div class="form-group" ng-class="{'has-error': vm.discountEventForm.articleCategoriesName0.$touched && vm.discountEventForm.articleCategoriesName0.$invalid}">
+		<p class="bold-text">Article Categories:</p>
+		<div id="article-categories" ng-scrollbars ng-scrollbars-config="vm.config">
+			<div class="checkbox category-width" ng-repeat="cat in vm.articleCategories">
+				<label><input article-category-validity="{index: {{$index}}, isNew: {{vm.isNew}}}" type="checkbox" name="articleCategoriesName{{$index}}" ng-model="cat.isChecked" ng-change="vm.updateCategories(cat)">{{cat.name}}</label>
+			</div>
+		</div>
+		<div ng-messages="vm.discountEventForm.articleCategoriesName0.$error" class="help-block" ng-show="vm.discountEventForm.articleCategoriesName0.$touched">
+			<p ng-message="requiredError">You didn't select any article category</p>
+	    </div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" ng-click="vm.newDiscountEvent(vm.discountEventForm.$valid)" ng-disabled="vm.discountEventForm.$invalid" ng-if="vm.isNew"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>
+	<button class="btn btn-primary" ng-click="vm.updateDiscountEvent(vm.discountEventForm.$valid)" ng-disabled="vm.discountEventForm.$invalid" ng-if="!vm.isNew"><i class="fa fa-pencil" aria-hidden="true"></i> Update</button>
+	<button class="btn btn-default" ng-click="vm.cancel()">Cancel</button>
+</div>

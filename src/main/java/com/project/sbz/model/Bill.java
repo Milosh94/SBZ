@@ -29,7 +29,7 @@ public class Bill implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "bill_code")
+	@Column(name = "bill_code", unique = true)
 	private String billCode;
 	
 	@JsonSerialize(using = JsonDateSerializer.class)

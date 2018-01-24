@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -39,22 +40,30 @@ public class CustomerProfile implements Serializable{
 	private CustomerCategory customerCategory;
 	
 	@JsonBackReference
-	@OneToMany(mappedBy = "")
+	@OneToMany(mappedBy = "buyer", fetch = FetchType.LAZY)
 	private Set<Bill> successfulBuyings;
+	
+	@JsonManagedReference
+	@JoinColumn(nullable = false, name = "customer_user")
+	@OneToOne(fetch = FetchType.EAGER)
+	private User user;
 	
 	public CustomerProfile() {
 		
 	}
 
 	public CustomerProfile(int id, String deliveryAddress, int rewardPoints, CustomerCategory customerCategory,
-			Set<Bill> successfulBuyings) {
+			Set<Bill> successfulBuyings, User user) {
 		super();
 		this.id = id;
 		this.deliveryAddress = deliveryAddress;
 		this.rewardPoints = rewardPoints;
 		this.customerCategory = customerCategory;
 		this.successfulBuyings = successfulBuyings;
+		this.user = user;
 	}
+
+
 
 	public int getId() {
 		return id;
@@ -94,6 +103,14 @@ public class CustomerProfile implements Serializable{
 
 	public void setSuccessfulBuyings(Set<Bill> successfulBuyings) {
 		this.successfulBuyings = successfulBuyings;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	

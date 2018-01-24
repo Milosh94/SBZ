@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -28,7 +29,7 @@ public class ArticleCategory implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "article_code", unique = true)
+	@Column(name = "article_category_code", unique = true)
 	private String articleCategoryCode;
 	
 	@JsonManagedReference
@@ -139,6 +140,19 @@ public class ArticleCategory implements Serializable{
 	public void setDiscountEvents(Set<DiscountEvent> discountEvents) {
 		this.discountEvents = discountEvents;
 	}
-	
-	
+
+	@PreRemove
+	private void preRemove(){
+		this.childCategories.forEach(category -> category.setParentCategory(null));
+		
+		this.categoryArticles.forEach(article -> {if(this.parentCategory == null){
+			article.setStatus(false);
+			article.setArticleCategory(null);
+		}
+		else{
+			article.setArticleCategory(this.parentCategory);
+		}});
+		
+		this.discountEvents.forEach(discount -> discount.getArticleCategories().removeIf(cat -> cat.getArticleCode().equalsIgnoreCase(this.articleCategoryCode)));
+	}
 }
