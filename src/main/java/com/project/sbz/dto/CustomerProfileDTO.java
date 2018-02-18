@@ -8,15 +8,18 @@ public class CustomerProfileDTO {
 	
 	private CustomerCategoryDTO customerCategoryDTO;
 	
+	private UserDTO userDTO;
+	
 	public CustomerProfileDTO(){
 		
 	}
 
-	public CustomerProfileDTO(String deliveryAddress, double rewardPoints, CustomerCategoryDTO customerCategoryDTO) {
+	public CustomerProfileDTO(String deliveryAddress, double rewardPoints, CustomerCategoryDTO customerCategoryDTO, UserDTO userDTO) {
 		super();
 		this.deliveryAddress = deliveryAddress;
 		this.rewardPoints = rewardPoints;
 		this.customerCategoryDTO = customerCategoryDTO;
+		this.userDTO = userDTO;
 	}
 
 	public String getDeliveryAddress() {
@@ -42,6 +45,11 @@ public class CustomerProfileDTO {
 	public void setCustomerCategoryDTO(CustomerCategoryDTO customerCategoryDTO) {
 		this.customerCategoryDTO = customerCategoryDTO;
 	}
-	
-	
-}
+
+	public UserDTO getUserDTO() {
+		return userDTO;
+	}
+
+	public void setUserDTO(UserDTO userDTO) {
+		this.userDTO = userDTO;
+	}}

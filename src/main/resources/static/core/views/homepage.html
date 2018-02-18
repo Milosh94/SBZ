@@ -114,3 +114,16 @@
 	<hr align="right" width="30%" class="horizontal-line"/>
 	<div ui-view="managerView"></div>
 </div>
+<div ng-if="vm.loggedUserRole.valueOf() === 'ROLE_SALESMAN'.valueOf()">
+	<div class="container-fluid btn-toolbar pull-right top-margin-five-percentage bottom-margin-tree-percentage">
+		<a ui-sref="process-bills">
+			<button class="btn btn-primary margin-right-5px">Process Bills</button>
+		</a>
+		<a ui-sref="order-articles">
+			<button class="btn btn-info margin-right-5px">Order Articles</button>
+		</a>
+	</div>
+	<div class="clearfix"></div>
+	<hr align="right" width="30%" class="horizontal-line"/>
+	<div ui-view="salesmanView"></div>
+</div>

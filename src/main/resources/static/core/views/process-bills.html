@@ -1,0 +1,56 @@
+<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-sm-3 background-gray">
+				<h4>Filter Bills</h4>
+				<p class="bold-text">Bill Status</p>
+				<div id="product-categories" ng-scrollbars ng-scrollbars-config="vm.config">
+					<div class="checkbox category-width">
+	  					<label><input type="checkbox" ng-model="vm.realized" ng-change="vm.updateBills()">Realized</label>
+					</div>
+					<div class="checkbox category-width">
+	  					<label><input type="checkbox" ng-model="vm.ordered" ng-change="vm.updateBills()">Ordered</label>
+					</div>
+					<div class="checkbox category-width">
+	  					<label><input type="checkbox" ng-model="vm.canceled" ng-change="vm.updateBills()">Canceled</label>
+					</div>
+				</div>
+			</div>
+			<div class="hidden-xs col-sm-1"></div>
+			<div class="col-xs-12 col-sm-8">
+				<div class="table-responsive">
+					<table class="table table-hover table-striped">
+						<thead>
+							<tr>
+								<th class="article-header-align">Bill Code</th>
+								<th class="article-header-align">Date Ordered</th>
+								<th class="article-header-align">Original Cost</th>
+								<th class="article-header-align">Discount</th>
+								<th class="article-header-align">Final Cost</th>
+								<th class="article-header-align">Username</th>
+								<th class="article-header-align">Points Spent</th>
+								<th class="article-header-align">Points Gained</th>
+								<th class="article-header-align">Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="bill in vm.bills | filter: vm.filterBills() | orderBy: vm.orderByDate">
+								<td>{{bill.billCode}}</td>
+								<td>{{bill.created}}</td>
+								<td>{{bill.originalCost}}</td>
+								<td>{{bill.discountPercentage}}%</td>
+								<td>{{bill.finalCost}}</td>
+								<td>{{bill.customerProfileDTO.userDTO.username}}</td>
+								<td>{{bill.rewardPointsSpent}}</td>
+								<td>{{bill.rewardPointsGained}}</td>
+								<td ng-if="bill.status === 1">Realized</td>
+								<td ng-if="bill.status === 0">Ordered</td>
+								<td ng-if="bill.status === -1">Canceled</td>
+								<td ng-if="bill.status === 0"><button class="btn btn-primary" ng-click="vm.processBill(bill)"><i class="fa fa-pencil" aria-hidden="true"></i> Process</button></td>
+								<td ng-if="bill.status !== 0"><button class="btn" ng-click="vm.processBill(bill)"><i class="fa fa-info" aria-hidden="true"></i> Info</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>

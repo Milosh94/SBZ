@@ -112,6 +112,28 @@
 							controllerAs: "vm"
 						}
 					}
+				})
+				.state("process-bills", {
+					parent: "homepage",
+					url:"/process-bills",
+					views: {
+						"salesmanView@homepage": {
+							templateUrl: "core/views/process-bills.html",
+							controller: "processBillsCtrl",
+							controllerAs: "vm"
+						}
+					}
+				})
+				.state("order-articles", {
+					parent: "homepage",
+					url: "/order-articles",
+					views: {
+						"salesmanView@homepage": {
+							templateUrl: "core/views/order-articles.html",
+							controller: "orderArticlesCtrl",
+							controllerAs: "vm"
+						}
+					}
 				});
 		
 		
@@ -144,9 +166,10 @@
 			console.log(transition.from().name);
 			console.log(transition.to().name);
 			console.log((transition.to().name == "profile" && user === null) || (transition.to().name == "profile" &&user.role[0].authority.valueOf() !== "ROLE_CUSTOMER".valueOf()));
-			if ((transition.to().name.valueOf() === "profile".valueOf() || transition.to().name.valueOf() === "shopping-history".valueOf() ||
+			if (((transition.to().name.valueOf() === "shopping-history".valueOf() ||
 					transition.to().name.valueOf() === "shopping-cart".valueOf())
-					&& (user === null || user.role[0].authority.valueOf() !== "ROLE_CUSTOMER".valueOf())) {
+					&& (user === null || user.role[0].authority.valueOf() !== "ROLE_CUSTOMER".valueOf())) || 
+					(transition.to().name.valueOf() === "profile".valueOf() && user === null)){
 				console.log("qwqwqwqwqwq");
 				return transition.router.stateService.target("root");
 			}

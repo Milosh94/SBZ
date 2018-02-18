@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -61,7 +62,7 @@ public class Bill implements Serializable{
 	@OneToMany(mappedBy = "bill")
 	private Set<BillDiscount> billDiscounts;
 	
-	@OneToMany(mappedBy = "bill")
+	@OneToMany(mappedBy = "bill", cascade =  CascadeType.ALL)
 	private Set<BillItem> billItems;
 	
 	public Bill() {
@@ -182,5 +183,7 @@ public class Bill implements Serializable{
 		this.billItems = billItems;
 	}
 	
-	
+	public void addBillDiscount(BillDiscount billDiscount){
+		this.billDiscounts.add(billDiscount);
+	}
 }

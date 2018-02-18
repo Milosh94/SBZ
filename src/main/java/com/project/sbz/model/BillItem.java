@@ -3,6 +3,7 @@ package com.project.sbz.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class BillItem implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "item_number", unique = true)
+	@Column(name = "item_number")
 	private int itemNumber;
 	
 	@JoinColumn(nullable = false, name = "bill_id")
@@ -47,7 +48,7 @@ public class BillItem implements Serializable{
 	@Column(name = "discount_percentage")
 	private double discountPercentage;
 	
-	@OneToMany(mappedBy = "item")
+	@OneToMany(mappedBy = "item", cascade =  CascadeType.PERSIST)
 	private Set<BillItemDiscount> itemDiscounts;
 	
 	public BillItem() {
@@ -150,5 +151,7 @@ public class BillItem implements Serializable{
 		this.itemDiscounts = itemDiscounts;
 	}
 	
-	
+	public void addItemDiscount(BillItemDiscount itemDiscount){
+		this.itemDiscounts.add(itemDiscount);
+	}
 }

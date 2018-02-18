@@ -40,7 +40,7 @@
 	
 	app.controller("shoppingCartCtrl", shoppingCartCtrlFunction);
 	
-	function shoppingCartCtrlFunction(authentication, $state, $window, UserResource, toastr, toastrConfig, $uibModal){
+	function shoppingCartCtrlFunction(authentication, $state, $window, UserResource, toastr, toastrConfig, $uibModal, CustomerResource){
 		var vm = this;
 		
 		vm.loggedUser = authentication.getLoggedUser();
@@ -53,9 +53,14 @@
 		else{
 			
 			vm.user = null;
-			
+			vm.userProfile = null;
+			vm.rewardPointsToSpend = 0;
 			UserResource.getLoggedUser().then(function(response){
 				vm.user = response;
+			});
+			UserResource.getUserProfile().then(function(response){
+				vm.userProfile = response;
+				console.log(response);
 			});
 			vm.currentShoppingCart = [];
 			if($window.localStorage["shoppingCart"] === undefined){
@@ -64,11 +69,12 @@
 			}
 			else {
 				vm.currentShoppingCart = JSON.parse($window.localStorage["shoppingCart"]);
+				console.log(vm.currentShoppingCart);
 			}
 			
 			vm.updateCart = function(article){
 				toastrConfig.maxOpened = 4;
-				if(article.updatedCartQuantity === undefined || article.updaredCartQuantity < 0 || article.updatedCartQuantity > article.articleCount){
+				if(article.updatedCartQuantity === undefined || article.updaredCartQuantity < 0){
 					toastr.error("Not a valid quantity", "Error: " + article.name, {
 						closeButton: true,
 						timeout: 3000
@@ -80,6 +86,7 @@
 						closeButton: true,
 						timeout: 3000
 					});
+					article.updatedCartQuantity = undefined;
 					$window.localStorage["shoppingCart"] = JSON.stringify(vm.currentShoppingCart);
 				}
 			}
@@ -126,10 +133,70 @@
 					}
 				}, function(res){});
 			}
+			
+			vm.checkout = function(isValid){
+				if(isValid){
+					var modalInstance = $uibModal.open({
+						templateUrl: "core/views/modals/checkout.html",
+						controller: "checkoutModalCtrl",
+						controllerAs: "vm"
+					});
+					modalInstance.result.then(function(res){
+						if(res !== undefined && res.length === 0){
+							console.log(vm.rewardPointsToSpend);
+							console.log(vm.currentShoppingCart);
+							var cart = {};
+							cart.rewardPoints = vm.rewardPointsToSpend;
+							cart.items = [];
+							for(var i = 0; i < vm.currentShoppingCart.length; i++){
+								cart.items.push({
+									articleCode: vm.currentShoppingCart[i].articleCode,
+									quantity: vm.currentShoppingCart[i].cartQuantity
+								});
+							}
+							CustomerResource.checkout(cart).then(function(response){
+								vm.currentShoppingCart = [];
+								$window.localStorage["shoppingCart"] = JSON.stringify([]);
+								var modalInstanceBill = $uibModal.open({
+									templateUrl: "core/views/modals/bill-checkout-info.html",
+									controller: "billCheckoutInfoModalCtrl",
+									controllerAs: "vm",
+									size: "lg", 
+									resolve: {
+										bill: function(){
+											return response;
+										}
+									}
+								});
+							}, function(error){
+								toastrConfig.maxOpened = 4;
+								toastr.error("Could not checkout cart", "Error", {
+									closeButton: true,
+									timeout: 3000
+								});
+							});
+						}
+					}, function(res){});
+				}
+			}
 		}
 	}
 	
-	shoppingCartCtrlFunction.$inject = ["authentication", "$state", "$window", "UserResource", "toastr", "toastrConfig", "$uibModal"];
+	shoppingCartCtrlFunction.$inject = ["authentication", "$state", "$window", "UserResource", "toastr", "toastrConfig", "$uibModal", "CustomerResource"];
+	
+	app.controller("billCheckoutInfoModalCtrl", billCheckoutInfoModalCtrlFunction);
+	
+	function billCheckoutInfoModalCtrlFunction(bill, $uibModalInstance){
+		var vm = this;
+		
+		vm.bill = bill;
+		
+		vm.okay = function(){
+			$uibModalInstance.dismiss("cancel");
+		}
+	}
+	
+	billCheckoutInfoModalCtrlFunction.$inject = ["bill", "$uibModalInstance"];
 	
 	app.controller("emptyCartModalCtrl", emptyCartModalCtrlFunction);
 	
@@ -148,4 +215,20 @@
 	}
 	
 	emptyCartModalCtrlFunction.$inject = ["cart", "$uibModalInstance"];
+	
+	app.controller("checkoutModalCtrl", checkoutModalCtrlFunction);
+	
+	function checkoutModalCtrlFunction($uibModalInstance){
+		var vm = this;
+		
+		vm.yes = function(){
+			$uibModalInstance.close([]);
+		}
+		
+		vm.cancel = function(){
+			$uibModalInstance.dismiss("cancel");
+		}
+	}
+	
+	checkoutModalCtrlFunction.$inject = ["$uibModalInstance"];
 })(angular);

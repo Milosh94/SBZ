@@ -10,6 +10,12 @@
 			});
 		}
 		
+		retObj.checkout = function(cart){
+			return Restangular.all("checkout").customPOST(cart, "", {}, {}).then(function(response){
+				return response;
+			});
+		}
+		
 		return retObj;
 	}
 	

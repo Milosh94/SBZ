@@ -1,6 +1,7 @@
 package com.project.sbz.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 @Entity
@@ -40,6 +42,13 @@ public class BillDiscount implements Serializable{
 		super();
 		this.id = id;
 		this.billDiscountCode = billDiscountCode;
+		this.bill = bill;
+		this.discountPercentage = discountPercentage;
+		this.discountType = discountType;
+	}
+
+	public BillDiscount(Bill bill, double discountPercentage, boolean discountType) {
+		super();
 		this.bill = bill;
 		this.discountPercentage = discountPercentage;
 		this.discountType = discountType;
@@ -85,6 +94,10 @@ public class BillDiscount implements Serializable{
 		this.discountType = discountType;
 	}
 	
-	
-
+	@PrePersist
+	private void prePersist(){
+		if(this.billDiscountCode == null){
+			this.billDiscountCode = System.currentTimeMillis() + "-" + UUID.randomUUID().toString();
+		}
+	}
 }

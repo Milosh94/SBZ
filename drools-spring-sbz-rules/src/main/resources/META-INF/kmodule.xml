@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule" 
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   
+   <kbase name="ExampleKBase1" packages="drools.spring.rules.billItemDiscount">
+        <ksession name="BillItemDiscount" />
+   </kbase>
+   
+   <kbase name="ExampleKBase2" packages="drools.spring.rules.billDiscount">
+        <ksession name="BillDiscount" />
+   </kbase>
+   
+   <kbase name="ExampleKBase3" packages="drools.spring.rules.rewardPoints">
+        <ksession name="RewardPoints" />
+   </kbase>
+   
+   <kbase name="ExampleKBase4" packages="drools.spring.rules.orderArticles">
+        <ksession name="OrderArticles" />
+   </kbase>
+   
+</kmodule>

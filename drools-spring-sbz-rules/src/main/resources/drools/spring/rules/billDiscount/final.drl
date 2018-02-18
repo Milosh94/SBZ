@@ -1,0 +1,43 @@
+//created on: Feb 8, 2018
+package drools.spring.rules.billDiscount
+
+//list any import classes here.
+import com.project.sbz.model.Bill
+import com.project.sbz.model.BillDiscount
+import com.project.sbz.model.BillItem
+
+//declare any global variables here
+
+
+
+
+rule "Bill Total Discount"
+	agenda-group "bill-final"
+	salience 1
+	lock-on-active true
+    when
+        $b: Bill($d: billDiscounts)
+        accumulate(
+        	BillDiscount($p: discountPercentage) from $d, 
+        	$total: sum($p)
+        )
+    then
+        modify($b){
+        	setDiscountPercentage($total)
+        }
+end
+
+rule "Bill Final Price"
+    agenda-group "bill-final"
+    lock-on-active true
+    when
+        $b: Bill($items: billItems && $d: discountPercentage)
+        accumulate(
+        	BillItem($p: totalDiscountPrice) from $items, 
+        	$total: sum($p)
+        )
+    then
+    	modify($b){
+    		setFinalCost($total - $total * $d / 100)
+    	}
+end

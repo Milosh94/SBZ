@@ -1,0 +1,66 @@
+<div class="container-fluid">
+	<h2>Articles with smaller quantity than minimum</h2>
+	<div class="container-fluid" ng-cloak>
+		<div class="table-responsive">
+			<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th rowspan="2" class="article-header-align">Product ID</th>
+						<th rowspan="2" class="article-header-align">Product Name</th>
+						<th rowspan="2" class="article-header-align">Product Category</th>
+						<th rowspan="2" class="article-header-align">Price</th>
+						<th rowspan="2" class="article-header-align">Minimum Quantity</th>
+						<th rowspan="2" class="article-header-align">Quantity</th>
+						<th rowspan="2" class="article-header-align">Order</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="art in vm.orderArticles">
+						<td>{{art.articleCode}}</td>
+						<td>{{art.name}}</td>
+						<td>{{art.articleCategoryName}}</td>
+						<td>{{art.price}}</td>
+						<td>{{art.minimalCount}}</td>
+						<td>{{art.articleCount}}</td>
+						<td class="min-width-350px">
+							<input type="number" class="add-to-cart-input" ng-model="art.updatedQuantity"/>
+							<button class="btn btn-primary" ng-click="vm.updateArt(art)"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Order quantity</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<h2>Other articles</h2>
+	<div class="container-fluid" ng-cloak>
+		<div class="table-responsive">
+			<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th rowspan="2" class="article-header-align">Product ID</th>
+						<th rowspan="2" class="article-header-align">Product Name</th>
+						<th rowspan="2" class="article-header-align">Product Category</th>
+						<th rowspan="2" class="article-header-align">Price</th>
+						<th rowspan="2" class="article-header-align">Minimum Quantity</th>
+						<th rowspan="2" class="article-header-align">Quantity</th>
+						<th rowspan="2" class="article-header-align">Order</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="art in vm.articles">
+						<td>{{art.articleCode}}</td>
+						<td>{{art.name}}</td>
+						<td>{{art.articleCategoryName}}</td>
+						<td>{{art.price}}</td>
+						<td>{{art.minimalCount}}</td>
+						<td>{{art.articleCount}}</td>
+						<td class="min-width-350px">
+							<input type="number" class="add-to-cart-input" ng-model="art.updatedQuantity"/>
+							<button class="btn btn-primary" ng-click="vm.updateArt(art)"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Order quantity</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

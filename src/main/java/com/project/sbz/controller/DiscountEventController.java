@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.sbz.dto.ArticleCategoryDTO;
 import com.project.sbz.dto.DiscountDTO;
+import com.project.sbz.model.ArticleCategory;
 import com.project.sbz.model.DiscountEvent;
 import com.project.sbz.service.ArticleCategoryService;
 import com.project.sbz.service.DiscountEventService;
@@ -81,7 +83,20 @@ public class DiscountEventController {
 		event.setArticleCategories(discount.getArticleCategories()
 		.stream()
 		.map(category -> this.articleCategoryService.findByArticleCategoryCode(category.getArticleCategoryCode()))
-		.filter(articleCategory -> articleCategory != null).collect(Collectors.toSet()));
+		.filter(articleCategory -> articleCategory != null && articleCategory.getChildCategories().size() == 0).collect(Collectors.toSet()));
+		Iterator<ArticleCategory> iter = event.getArticleCategories().iterator();
+		while(iter.hasNext()){
+		    Iterator<DiscountEvent> dIter = iter.next().getDiscountEvents().iterator();
+		    while(dIter.hasNext()){
+		    	DiscountEvent de = dIter.next();
+		    	boolean from = de.getDateFrom().before(event.getDateFrom()) && de.getDateTo().after(event.getDateFrom());
+		    	boolean to = de.getDateFrom().before(event.getDateTo()) && de.getDateTo().after(event.getDateTo());
+		    	boolean between = de.getDateFrom().after(event.getDateFrom()) && de.getDateTo().before(event.getDateTo());
+		    	if(from || to || between){
+		    		return new ResponseEntity<DiscountDTO>(HttpStatus.EXPECTATION_FAILED);
+		    	}
+		    }
+		}
 		this.discountEventService.save(event);
 		return new ResponseEntity<DiscountDTO>(HttpStatus.OK);
 	}
@@ -108,7 +123,20 @@ public class DiscountEventController {
 		discount.setArticleCategories(discountDTO.getArticleCategories()
 		.stream()
 		.map(category -> this.articleCategoryService.findByArticleCategoryCode(category.getArticleCategoryCode()))
-		.filter(articleCategory -> articleCategory != null).collect(Collectors.toSet()));
+		.filter(articleCategory -> articleCategory != null && articleCategory.getChildCategories().size() == 0).collect(Collectors.toSet()));
+		Iterator<ArticleCategory> iter = discount.getArticleCategories().iterator();
+		while(iter.hasNext()){
+		    Iterator<DiscountEvent> dIter = iter.next().getDiscountEvents().iterator();
+		    while(dIter.hasNext()){
+		    	DiscountEvent de = dIter.next();
+		    	boolean from = de.getId() != discount.getId() && de.getDateFrom().before(discount.getDateFrom()) && de.getDateTo().after(discount.getDateFrom());
+		    	boolean to = de.getId() != discount.getId() && de.getDateFrom().before(discount.getDateTo()) && de.getDateTo().after(discount.getDateTo());
+		    	boolean between = de.getId() != discount.getId() && de.getDateFrom().after(discount.getDateFrom()) && de.getDateTo().before(discount.getDateTo());
+		    	if(from || to || between){
+		    		return new ResponseEntity<DiscountDTO>(HttpStatus.EXPECTATION_FAILED);
+		    	}
+		    }
+		}
 		this.discountEventService.save(discount);
 		return new ResponseEntity<DiscountDTO>(HttpStatus.OK);
 	}

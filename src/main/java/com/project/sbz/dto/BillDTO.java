@@ -33,13 +33,15 @@ public class BillDTO {
 	
 	private List<BillItemDTO> billItemsDTO;
 	
+	private CustomerProfileDTO customerProfileDTO;
+	
 	public BillDTO(){
 		
 	}
 
 	public BillDTO(String billCode, Date created, int status, double originalCost, double discountPercentage,
 			double finalCost, int rewardPointsSpent, int rewardPointsGained, List<BillDiscountDTO> billDiscountsDTO,
-			List<BillItemDTO> billItemsDTO) {
+			List<BillItemDTO> billItemsDTO, CustomerProfileDTO customerProfileDTO) {
 		super();
 		this.billCode = billCode;
 		this.created = created;
@@ -51,6 +53,7 @@ public class BillDTO {
 		this.rewardPointsGained = rewardPointsGained;
 		this.billDiscountsDTO = billDiscountsDTO;
 		this.billItemsDTO = billItemsDTO;
+		this.customerProfileDTO = customerProfileDTO;
 	}
 
 	public List<BillDiscountDTO> getBillDiscountsDTO() {
@@ -131,5 +134,13 @@ public class BillDTO {
 
 	public void setRewardPointsGained(int rewardPointsGained) {
 		this.rewardPointsGained = rewardPointsGained;
+	}
+
+	public CustomerProfileDTO getCustomerProfileDTO() {
+		return customerProfileDTO;
+	}
+
+	public void setCustomerProfileDTO(CustomerProfileDTO customerProfileDTO) {
+		this.customerProfileDTO = customerProfileDTO;
 	}
 }

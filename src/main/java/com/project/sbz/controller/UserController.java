@@ -156,9 +156,11 @@ public class UserController{
 		CustomerCategoryDTO customerCategoryDTO = new CustomerCategoryDTO(user.getCustomerProfile().getCustomerCategory().getCategoryCode(),
 				user.getCustomerProfile().getCustomerCategory().getName(),
 				consumptionThresholds);
-		CustomerProfileDTO profile = new CustomerProfileDTO(user.getCustomerProfile().getDeliveryAddress(),
+		CustomerProfileDTO profile = new CustomerProfileDTO(
+				user.getCustomerProfile().getDeliveryAddress(),
 				user.getCustomerProfile().getRewardPoints(),
-				customerCategoryDTO);
+				customerCategoryDTO,
+				null);
 		return new ResponseEntity<CustomerProfileDTO>(profile, HttpStatus.OK);
 	}
 }

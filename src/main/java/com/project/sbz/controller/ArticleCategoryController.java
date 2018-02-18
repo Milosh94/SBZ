@@ -40,6 +40,19 @@ public class ArticleCategoryController {
 		return new ResponseEntity<List<ArticleCategoryDTO>>(categories, HttpStatus.OK);
 	}
 	
+	@GetMapping("/category-no-goods")
+	public ResponseEntity<List<ArticleCategoryDTO>> getCategoriesWithoutConsumerGoods(){
+		List<ArticleCategoryDTO> categories = this.articleCategoryService.findAll()
+				.stream()
+				.filter(category -> category.getChildCategories().size() == 0)
+				.map(item -> new ArticleCategoryDTO(
+						item.getArticleCategoryCode(),
+						item.getName(),
+						item.getAllowedDiscountPercentage()))
+				.collect(Collectors.toList());
+		return new ResponseEntity<List<ArticleCategoryDTO>>(categories, HttpStatus.OK);
+	}
+	
 	@GetMapping("/article-category")
 	public ResponseEntity<List<ArticleCategoryComplexDTO>> getComplexCategories(){
 		List<ArticleCategoryComplexDTO> categories = this.articleCategoryService.findAll()

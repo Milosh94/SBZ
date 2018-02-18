@@ -71,11 +71,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 						"/core/views/modals/delete-threshold.html", "/core/views/modals/update-category-thresholds.html",
 						"/core/views/modals/delete-article-category.html", "/core/views/modals/new-update-article-category.html",
 						"/core/views/modals/delete-discount-event.html", "/core/views/modals/new-update-discount-event.html", 
-						"/core/scripts/discount-event/**", "/core/directives/**").permitAll()
-				.antMatchers("/api/customer-category", "/api/article-category", "/api/discount-event")
+						"/core/scripts/discount-event/**", "/core/directives/**","/core/views/process-bills.html", 
+						"/core/views/order-articles.html", "/core/scripts/salesman/**", "/core/scripts/bill/**", 
+						"/core/views/modals/process-bill.html", "/core/views/modals/approve-bill.html", 
+						"/core/views/modals/refuse-bill.html", "/core/views/modals/checkout.html", 
+						"/core/views/modals/error-discount-event.html", "/core/views/modals/bill-checkout-info.html").permitAll()
+				.antMatchers("/api/customer-category", "/api/article-category", "/api/discount-event", "/api/category-no-goods")
 					.hasAuthority("ROLE_MANAGER")
-				.antMatchers("/api/search", "/api/user-profile", "/api/shopping-history")
+				.antMatchers("/api/search", "/api/user-profile", "/api/shopping-history","/api/checkout")
 					.hasAuthority("ROLE_CUSTOMER")
+				.antMatchers("/api/bill", "/api/approve-bill", "/api/refuse-bill", "/api/articles", "/api/order-articles")
+					.hasAuthority("ROLE_SALESMAN")
 				.anyRequest().authenticated();
 				//.and().csrf().csrfTokenRepository(csrfTokenRepository());
 		httpSecurity.csrf().disable();

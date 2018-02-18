@@ -1,0 +1,54 @@
+//created on: Feb 7, 2018
+package drools.spring.rules.billItemDiscount
+
+//list any import classes here.
+import com.project.sbz.model.BillItem
+import com.project.sbz.model.BillItemDiscount
+
+import java.util.ArrayList
+//declare any global variables here
+
+
+
+
+rule "Final Item Discount"
+	agenda-group "item-final"
+	salience 1
+	lock-on-active true
+    when
+        $i: BillItem($a: article && $discounts: itemDiscounts)
+        accumulate(
+        	BillItemDiscount(
+        		$p: discountPercentage
+        	) from $discounts, 
+        	$total: sum($p)
+        )
+        accumulate(
+        	Number(
+        		$dv: doubleValue
+        	) from createList($total, $a.articleCategory.allowedDiscountPercentage), 
+        	$minimum: min($dv)
+        )
+    then
+        modify($i){
+        	setDiscountPercentage($minimum)
+        }
+end
+
+rule "Final Item Price"
+    agenda-group "item-final"
+    lock-on-active true
+    when
+        $i: BillItem($total: totalOriginalPrice && $discount: discountPercentage)
+    then
+    	modify($i){
+        	setTotalDiscountPrice($total - $total * $discount / 100)
+        }
+end
+
+function ArrayList<Double> createList(Double total, Double allowed){
+	ArrayList<Double> ret = new ArrayList<Double>();
+	ret.add(total);
+	ret.add(allowed);
+	return ret;
+}

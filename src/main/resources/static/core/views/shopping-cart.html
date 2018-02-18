@@ -37,7 +37,7 @@
 							<td ng-if="art.discount !== null">{{art.discount.discountPercentage}}%</td>
 							<td>{{art.articleCount}}</td>
 							<td>{{art.cartQuantity}}</td>
-							<td>
+							<td class="min-width-350px">
 								<input type="number" class="add-to-cart-input" ng-model="art.updatedCartQuantity"/>
 								<button class="btn btn-primary" ng-click="vm.updateCart(art)"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Change quantity</button>
 								<button class="btn btn-danger" ng-click="vm.removeFromCart(art)"><i class="fa fa-times" aria-hidden="true"></i> Remove</button>
@@ -46,8 +46,22 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="container-fluid">
-				<button class="btn btn-success" ng-click="vm.checkout()"><i class="fa fa-check" aria-hidden="true"></i> Checkout</button>
+			<div ng-form="vm.rewardPointsForm">
+				<h4 title="If points are greater than total cost, they are changed automatically to total cost">Use reward points to cover up cost <i>(optional):</i></h4>
+				<h5>You have {{vm.userProfile.rewardPoints}} reward points to spend</h5>
+				<div class="form-group" ng-class="{'has-error': vm.rewardPointsForm.rewardPointName.$touched && vm.rewardPointsForm.rewardPointName.$invalid}">
+					<label for="rewardPointsId">Select reward points:</label>
+					<input name="rewardPointName" id="rewardPointsId" class="form-control width-auto" type="number" ng-model="vm.rewardPointsToSpend" ng-pattern="/^[^e]+$/" min="0" max="{{vm.userProfile.rewardPoints}}"/>
+					<div ng-messages="vm.rewardPointsForm.rewardPointName.$error" class="help-block" ng-show="vm.rewardPointsForm.rewardPointName.$touched">
+        				<p ng-message="number">You did not enter a valid number</p>
+        				<p ng-message="min">Your number is lesser than zero</p>
+        				<p ng-message="max">Your number is greater than your total reward points</p>
+        				<p ng-message="pattern">You did not enter a valid number</p>
+      				</div>
+				</div>
+			</div>
+			<div class="total-bill">
+				<button class="btn btn-success" ng-click="vm.checkout(vm.rewardPointsForm.$valid)" ng-disabled="vm.rewardPointsForm.$invalid"><i class="fa fa-check" aria-hidden="true"></i> Checkout</button>
 				<button class="btn btn-danger" ng-click="vm.emptyCart()"><i class="fa fa-times" aria-hidden="true"></i> Empty cart</button>
 			</div>
 		</div>

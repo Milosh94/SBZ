@@ -1,0 +1,80 @@
+//created on: Feb 7, 2018
+package drools.spring.rules.billDiscount
+
+//list any import classes here.
+import com.project.sbz.model.Bill
+import com.project.sbz.model.BillItem
+import com.project.sbz.model.BillDiscount
+
+import java.util.Date
+import java.util.Calendar
+//declare any global variables here
+
+
+
+
+rule "Bill Original Price"
+	agenda-group "bill-original-price"
+	lock-on-active true
+    when
+        $b : Bill($items: billItems)
+        accumulate(
+        	BillItem($p: totalDiscountPrice) from $items,
+        	$total: sum($p)
+        )
+    then
+        modify($b){
+        	setOriginalCost($total)
+        }
+end
+
+rule "Basic Discount of 5%"
+	agenda-group "bill-discounts"
+	lock-on-active true
+    when
+        $b : Bill(originalCost > 200000.0)
+    then
+        modify($b){
+        	addBillDiscount(new BillDiscount($b, 5.0, false))
+        }
+end
+
+rule "Additional Discount of 1% for old customers"
+	agenda-group "bill-discounts"
+	lock-on-active true
+    when
+        $b : Bill(addYears(buyer.user.registerDate, 2) < new Date())
+    then
+        modify($b){
+        	addBillDiscount(new BillDiscount($b, 1.0, true))
+        }
+end
+
+rule "Additional Discount of 1%"
+	agenda-group "bill-discounts"
+	lock-on-active true
+    when
+        $b : Bill(buyer.customerCategory.categoryCode in ("s", "g"))
+    then
+        modify($b){
+        	addBillDiscount(new BillDiscount($b, 1.0, true))
+        }
+end
+
+rule "Additional Discount of 3%"
+	agenda-group "bill-discounts"
+	lock-on-active true
+    when
+        $b : Bill(originalCost > 50000 && billItems.size() >= 10)
+    then
+        modify($b){
+        	addBillDiscount(new BillDiscount($b, 3.0, true))
+        }
+end
+
+function Date addYears(Date date, int years){
+	Calendar c = Calendar.getInstance(); 
+    c.setTime(date); 
+    c.add(Calendar.YEAR, years); 
+    return c.getTime(); 
+}

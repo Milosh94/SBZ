@@ -430,13 +430,13 @@
 	
 	app.controller("newDiscountEventModalCtrl", newDiscountEventModalCtrlFunction);
 	
-	function newDiscountEventModalCtrlFunction($uibModalInstance, DiscountEventResource, CategoryResource){
+	function newDiscountEventModalCtrlFunction($uibModalInstance, DiscountEventResource, CategoryResource, $uibModal){
 		var vm = this;
 		
 		vm.discountEvent = {};
 		vm.isNew = true;
 		
-		CategoryResource.getCategories().then(function(response){
+		CategoryResource.getCategoriesWithoutGoods().then(function(response){
 			vm.articleCategories = response;	
 		});
 		
@@ -489,6 +489,11 @@
 					if(response.status === 409){
 						vm.discountEventForm.discountEventCodeName.$setValidity("uniqueError", false);
 					}
+					if(response.status === 417){
+						var modalInstance = $uibModal.open({
+							templateUrl: "core/views/modals/error-discount-event.html"
+						})
+					}
 				});
 			}
 		}
@@ -502,17 +507,17 @@
 		}
 	}
 	
-	newDiscountEventModalCtrlFunction.$inject = ["$uibModalInstance", "DiscountEventResource", "CategoryResource"];
+	newDiscountEventModalCtrlFunction.$inject = ["$uibModalInstance", "DiscountEventResource", "CategoryResource", "$uibModal"];
 	
 	app.controller("updateDiscountEventModalCtrl", updateDiscountEventModalCtrlFunction);
 	
-	function updateDiscountEventModalCtrlFunction($uibModalInstance, discountEvent, DiscountEventResource, CategoryResource){
+	function updateDiscountEventModalCtrlFunction($uibModalInstance, discountEvent, DiscountEventResource, CategoryResource, $uibModal){
 		var vm = this;
 		
 		vm.discountEvent = JSON.parse(JSON.stringify(discountEvent));
 		vm.isNew = false;
 		
-		CategoryResource.getCategories().then(function(response){
+		CategoryResource.getCategoriesWithoutGoods().then(function(response){
 			vm.articleCategories = response;
 			for(var i = 0; i < vm.discountEvent.articleCategories.length; i++){
 				for(var j = 0; j < vm.articleCategories.length; j++){
@@ -570,6 +575,12 @@
 				vm.discountEvent.articleCategories = vm.selectedArticleCategories;
 				DiscountEventResource.putDiscountEvent(vm.discountEvent).then(function(response){
 					$uibModalInstance.close("success");
+				}, function(response){
+					if(response.status === 417){
+						var modalInstance = $uibModal.open({
+							templateUrl: "core/views/modals/error-discount-event.html"
+						})
+					}
 				});
 			}
 		}
@@ -579,5 +590,5 @@
 		}
 	}
 	
-	updateDiscountEventModalCtrlFunction.$inject = ["$uibModalInstance", "discountEvent", "DiscountEventResource", "CategoryResource"];
+	updateDiscountEventModalCtrlFunction.$inject = ["$uibModalInstance", "discountEvent", "DiscountEventResource", "CategoryResource", "$uibModal"];
 })();

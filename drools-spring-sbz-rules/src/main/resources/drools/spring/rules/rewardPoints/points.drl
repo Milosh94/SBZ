@@ -1,0 +1,23 @@
+//created on: Feb 8, 2018
+package drools.spring.rules.rewardPoints
+
+//list any import classes here.
+import com.project.sbz.model.Bill
+import com.project.sbz.model.ConsumptionThreshold
+
+//declare any global variables here
+
+
+
+
+rule "Reward Points"
+	agenda-group "reward-points"
+	lock-on-active true
+    when
+        $b: Bill($thresholds: buyer.customerCategory.consumptionThresholds && $p: finalCost)
+        $c: ConsumptionThreshold(priceFrom <= $p && priceTo > $p && $discount: rewardPointsPercentage) from $thresholds
+    then
+        modify($b){
+        	setRewardPointsGained((int) Math.round($p * $discount / 100))
+        }
+end

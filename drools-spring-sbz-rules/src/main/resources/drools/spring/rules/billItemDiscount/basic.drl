@@ -1,0 +1,46 @@
+//created on: Feb 1, 2018
+package drools.spring.rules.billItemDiscount
+
+//list any import classes here.
+import com.project.sbz.model.BillItem
+import com.project.sbz.model.BillItemDiscount
+//declare any global variables here
+
+
+
+
+rule "Basic Discount of 10%"
+	agenda-group "item-basic-discounts"
+	salience 10
+	lock-on-active true
+    when
+        $i: BillItem(count > 20 && (article.articleCategory.parentCategory == null || article.articleCategory.parentCategory.name != "Consumer Goods"))
+    then
+        modify($i){
+        	addItemDiscount(new BillItemDiscount($i, 10.0, false));
+        };
+end
+
+rule "Basic Discount of 5%"
+    agenda-group "item-basic-discounts"
+    salience 5
+    lock-on-active true
+    when
+        $i: BillItem(count > 5 && article.articleCategory.name in ("TVs", "Computers", "Laptops") && itemDiscounts.isEmpty())
+    then
+        modify($i){
+        	addItemDiscount(new BillItemDiscount($i, 5.0, false));
+        };
+end
+
+rule "Basic Discount of 7%"
+	agenda-group "item-basic-discounts"
+	salience 7
+	lock-on-active true
+	when
+		$i: BillItem(totalOriginalPrice > 5000 && article.articleCategory.parentCategory != null && article.articleCategory.parentCategory.name == "Consumer Goods" && itemDiscounts.isEmpty())
+	then
+		modify($i){
+			addItemDiscount(new BillItemDiscount($i, 7.0, false));
+		};
+end

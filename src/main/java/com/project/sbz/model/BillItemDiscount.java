@@ -1,6 +1,7 @@
 package com.project.sbz.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 @Entity
@@ -24,7 +26,7 @@ public class BillItemDiscount implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "bill_item_discount_code")
+	@Column(name = "bill_item_discount_code", unique = true)
 	private String billItemDiscountCode;
 	
 	@JoinColumn(name = "item_id", nullable = false)
@@ -47,6 +49,19 @@ public class BillItemDiscount implements Serializable{
 		this.id = id;
 		this.billItemDiscountCode = billItemDiscountCode;
 		this.item = item;
+		this.discountPercentage = discountPercentage;
+		this.discountType = discountType;
+	}
+
+	public BillItemDiscount(BillItem item, double discountPercentage, boolean discountType) {
+		super();
+		this.item = item;
+		this.discountPercentage = discountPercentage;
+		this.discountType = discountType;
+	}
+
+	public BillItemDiscount(double discountPercentage, boolean discountType) {
+		super();
 		this.discountPercentage = discountPercentage;
 		this.discountType = discountType;
 	}
@@ -91,5 +106,10 @@ public class BillItemDiscount implements Serializable{
 		this.discountType = discountType;
 	}
 	
-	
+	@PrePersist
+	private void prePersist(){
+		if(this.billItemDiscountCode == null){
+			this.billItemDiscountCode = System.currentTimeMillis() + "-" + UUID.randomUUID().toString();
+		}
+	}
 }

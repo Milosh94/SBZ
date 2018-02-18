@@ -1,0 +1,24 @@
+//created on: Feb 8, 2018
+package drools.spring.rules.orderArticles
+
+//list any import classes here.
+import com.project.sbz.model.Article
+
+import java.util.List
+//declare any global variables here
+
+
+
+
+rule "Order Articles"
+	agenda-group "order-articles"
+	lock-on-active true
+    when
+    	$articlesToOrder: List()
+        $list: List(size > 0) from collect(Article(minimalArticleCount > articleCount))
+    then
+        for(int i = 0; i < $list.size(); i++){
+        	((Article)$list.get(i)).setOrderMoreArticles(true);
+        }
+        $articlesToOrder.addAll($list);
+end

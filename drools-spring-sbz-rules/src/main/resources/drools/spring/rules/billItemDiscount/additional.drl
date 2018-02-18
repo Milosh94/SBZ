@@ -1,0 +1,65 @@
+//created on: Feb 5, 2018
+package drools.spring.rules.billItemDiscount
+
+//list any import classes here.
+import com.project.sbz.model.BillItem
+import com.project.sbz.model.BillItemDiscount
+import com.project.sbz.model.CustomerProfile
+import com.project.sbz.model.Bill
+import com.project.sbz.model.DiscountEvent
+import com.project.sbz.model.ArticleCategory
+
+import java.util.Date
+import java.util.Calendar;
+//declare any global variables here
+
+
+
+
+rule "Additional Discount of 2%"
+	agenda-group "item-additional-discounts"
+	lock-on-active true
+    when
+        $i: BillItem($a: article)
+        $c: CustomerProfile()
+        $b: Bill(changeDate(created, 15) > new Date() && $items: billItems && status == 1) from $c.successfulBuyings
+        BillItem(article.id == $a.id) from $items
+    then
+        modify($i){
+        	addItemDiscount(new BillItemDiscount($i, 2.0, true))
+        }
+end
+
+rule "Additional Discount of 1%"
+	agenda-group "item-additional-discounts"
+    lock-on-active true
+    when
+        $i: BillItem($a: article)
+        $c: CustomerProfile()
+        $b: Bill(changeDate(created, 30) > new Date() && $items: billItems && status == 1) from $c.successfulBuyings
+        BillItem(article.articleCategory.id == $a.articleCategory.id) from $items
+    then
+        modify($i){
+        	addItemDiscount(new BillItemDiscount($i, 1.0, true))
+        }
+end
+
+rule "Additional Discount from Discount Event"
+	agenda-group "item-additional-discounts"
+    lock-on-active true
+    when
+        $i: BillItem($a: article && $b: bill)
+        $d: DiscountEvent(dateFrom < new Date() && dateTo > new Date()) from $a.articleCategory.discountEvents
+        ArticleCategory($a.articleCategory.id == id) from $d.articleCategories
+    then
+        modify($i){
+        	addItemDiscount(new BillItemDiscount($i, $d.getDiscountPercentage(), true))
+        }
+end
+
+function Date changeDate(Date date, int days){
+	Calendar c = Calendar.getInstance();
+	c.setTime(date);
+	c.add(Calendar.DATE, days);
+	return c.getTime();
+}

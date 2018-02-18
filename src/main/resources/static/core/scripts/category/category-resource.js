@@ -10,6 +10,12 @@
 			});
 		}
 		
+		retObj.getCategoriesWithoutGoods = function(){
+			return Restangular.all("category-no-goods").getList().then(function(response){
+				return response;
+			})
+		}
+		
 		return retObj;
 	}
 	

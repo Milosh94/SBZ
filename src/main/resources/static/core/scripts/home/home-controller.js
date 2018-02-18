@@ -282,7 +282,7 @@
 			vm.addToCart = function(article){
 				console.log(article.cartQuantity);
 				toastrConfig.maxOpened = 4;
-				if(article.cartQuantity === undefined || article.cartQuantity < 0 || article.cartQuantity > article.articleCount){
+				if(article.cartQuantity === undefined || article.cartQuantity < 0){
 					//toastrConfig.maxOpened = 4;
 					toastr.error("Not a valid quantity", "Error: " + article.name, {
 						closeButton: true,
@@ -295,21 +295,12 @@
 					for(var i = 0; i < currentShoppingCart.length; i++){
 						if(currentShoppingCart[i].articleCode.valueOf() === article.articleCode.valueOf()){
 							var total = currentShoppingCart[i].cartQuantity + article.cartQuantity;
-							if(total > article.articleCount){
-								//toastrConfig.maxOpened = 4;
-								toastr.error("Too much quantity, already added " + currentShoppingCart[i].cartQuantity + " to cart", "Error: " + article.name, {
-									closeButton: true,
-									timeout: 3000
-								});
-							}
-							else{
-								//toastrConfig.maxOpened = 4;
-								toastr.success("Added " + article.cartQuantity + ", total in cart " + total, "Success: " + article.name, {
-									closeButton: true,
-									timeout: 3000
-								})
-								currentShoppingCart[i].cartQuantity = total;
-							}
+							//toastrConfig.maxOpened = 4;
+							toastr.success("Added " + article.cartQuantity + ", total in cart " + total, "Success: " + article.name, {
+								closeButton: true,
+								timeout: 3000
+							})
+							currentShoppingCart[i].cartQuantity = total;
 							dontExists = false;
 							break;
 						}
@@ -327,13 +318,15 @@
 		}
 		else if(vm.loggedUserRole.valueOf() === "ROLE_MANAGER"){
 			$timeout(function(){
-				$state.go("customer-categories");
+				$state.go("customer-categories", {}, {location: false});
 			});
 			
 			
 		}
 		else if(vm.loggedUserRole.valueOf() === "ROLE_SALESMAN"){
-			
+			$timeout(function(){
+				$state.go("process-bills", {}, {location: false});
+			});
 		}
 	}
 	

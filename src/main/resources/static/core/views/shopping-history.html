@@ -23,7 +23,7 @@
 					<div class="container-fluid profile-div-spacing">
 						<div ng-if="item.itemDiscountsDTO.length === 0">Bought without any discount</div>
 						<div class="row" ng-repeat="itemDiscount in item.itemDiscountsDTO">
-							<div class="col-xs-4"><b class="profile-spacing">Item Discount Code:</b><span>{{itemDiscount.billItemDiscountCode}}</span></div>
+							<div class="col-xs-4"><b class="profile-spacing">Item Discount Code:</b><span>{{itemDiscount.billItemDiscountCode.slice(-10)}}</span></div>
 							<div class="col-xs-4"><b class="profile-spacing">Discount Percentage:</b><span>{{itemDiscount.discountPercentage}}%</span></div>
 							<div class="col-xs-4">
 								<b class="profile-spacing">Discount Type:</b>
@@ -42,7 +42,7 @@
 			<h4>Bill Discounts:</h4>
 			<div ng-if="bill.billDiscountsDTO.length === 0">No discounts</div>
 			<div ng-repeat="billDiscount in bill.billDiscountsDTO">
-				<div class="col-xs-4"><b class="profile-spacing">Bill Discount Code:</b><span>{{billDiscount.billDiscountCode}}</span></div>
+				<div class="col-xs-4"><b class="profile-spacing">Bill Discount Code:</b><span>{{billDiscount.billDiscountCode.slice(-10)}}</span></div>
 				<div class="col-xs-4"><b class="profile-spacing">Discount Percentage:</b><span>{{billDiscount.discountPercentage}}%</span></div>
 				<div class="col-xs-4">
 					<b class="profile-spacing">Discount Type:</b>
